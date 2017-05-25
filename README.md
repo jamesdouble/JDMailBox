@@ -25,7 +25,10 @@ JDMailBox is basically a **MFMailComposeViewController** :mailbox_with_mail: , b
 ### Basic
 ```Swift
   jdmailbox = JDMailBoxComposeVC(rootVC: self)
+  if(JDMailBoxComposeVC.canSendMail())   /* importnat */
+  {
   self.present(jdmailbox, animated: true, completion: nil)
+  }
 ```
 ### Signature :pencil2:
 ```Swift
@@ -33,6 +36,10 @@ JDMailBox is basically a **MFMailComposeViewController** :mailbox_with_mail: , b
   jdmailbox.setSignature(signature: "JamesDouble")
   self.present(jdmailbox, animated: true, completion: nil)
 ```
+
+## Notice
+It is important to call this function
+**JDMailBoxComposeVC.canSendMail()**
 
 
 

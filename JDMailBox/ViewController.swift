@@ -19,16 +19,17 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        
     }
     
     @IBAction func demo(_ sender: Any) {
-        jdmailbox = JDMailBoxComposeVC(rootVC: self)
-        jdmailbox.maildelegate = self
-        jdmailbox.setSignature(signature: "JamesDouble")
-        self.present(jdmailbox, animated: true, completion: nil)
+        if(JDMailBoxComposeVC.canSendMail())   /* importnat */
+        {
+            jdmailbox = JDMailBoxComposeVC(rootVC: self)
+            jdmailbox.maildelegate = self
+            jdmailbox.setSignature(signature: "JamesDouble")
+            self.present(jdmailbox, animated: true, completion: nil)
+        }
     }
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -40,7 +41,6 @@ extension ViewController:MFMailComposeViewControllerDelegate
 {
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?)
     {
-        print(result.rawValue)
-        controller.dismiss(animated: true, completion: nil)
+        print("User Defined Delegate")
     }
 }

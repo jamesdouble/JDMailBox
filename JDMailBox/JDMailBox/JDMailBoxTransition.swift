@@ -58,7 +58,10 @@ class JDMailBoxPresentAnimationController: NSObject, UIViewControllerAnimatedTra
         let toVCView = toVC.view
         toVCView?.alpha = 0
         let containerView = transitionContext.containerView
-        containerView.addSubview(toVCView!)
+        if let toView = toVCView
+        {
+            containerView.addSubview(toView)
+        }
         /**
             1 Envelope
         **/
@@ -130,11 +133,15 @@ class JDMailBoxPresentAnimationController: NSObject, UIViewControllerAnimatedTra
                 let EnvelopeFrame:CGRect = EnvelopeView.frame
                 let PieceSize:CGSize = CGSize(width: EnvelopeFrame.width, height: EnvelopeFrame.height/2)
                 BottomEnvelopImg = JDEnvelopImage(image: TextedEnvelopeImg, isDown: true, frame: EnvelopeFrame, size: PieceSize)
-                containerView.addSubview(BottomEnvelopImg!)
                 UpperEnvelopCoverImg = JDEnvelopImage(image: TextFreeEnvelopeImg, isDown: false, frame: EnvelopeFrame, size: PieceSize)
-                containerView.addSubview(UpperEnvelopCoverImg!)
                 UpperEnvelopImg = JDEnvelopImage(image: TextedEnvelopeImg, isDown: false, frame: EnvelopeFrame, size: PieceSize)
-                containerView.addSubview(UpperEnvelopImg!)
+                guard let bottom = BottomEnvelopImg,let cover = UpperEnvelopCoverImg,let upper = UpperEnvelopImg else {
+                    transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+                    return
+                }
+                containerView.addSubview(bottom)
+                containerView.addSubview(cover)
+                containerView.addSubview(upper)
                 EnvelopeView.isHidden = true
                 foldMail()
             }
@@ -160,8 +167,11 @@ class JDMailBoxPresentAnimationController: NSObject, UIViewControllerAnimatedTra
                         down.layer.transform = self.config3DTransformWithRotateAngle(angle: 0, y: -up.frame.height / 4)
                     })
                 }){ (_) in
-                    UpperEnvelopImg!.removeFromSuperview()
-                    containerView.bringSubview(toFront: UpperEnvelopCoverImg!)
+                    if let Upper = UpperEnvelopImg,let cover = UpperEnvelopCoverImg
+                    {
+                        Upper.removeFromSuperview()
+                        containerView.bringSubview(toFront: cover)
+                    }
                     foldMailEnd()
                 }
                 func foldMailEnd()
@@ -172,7 +182,10 @@ class JDMailBoxPresentAnimationController: NSObject, UIViewControllerAnimatedTra
                             down.layer.transform = self.config3DTransformWithRotateAngle(angle: 0, y: -up.frame.height / 4)
                         })
                     }){ (_) in
-                        BottomEnvelopImg!.removeFromSuperview()
+                        if let Bottom = BottomEnvelopImg
+                        {
+                           Bottom.removeFromSuperview()
+                        }
                         sendIt()
                     }
                 }

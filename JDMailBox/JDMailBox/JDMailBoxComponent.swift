@@ -151,7 +151,6 @@ class JDEnvelopImage:UIImageView
             self.layer.contentsRect = CGRect(x: 0, y: 0.5, width: 1, height: 0.5)
             self.frame = CGRect(origin: CGPoint(x: frame.origin.x, y: frame.origin.y + frame.height/2), size: size)
             self.layer.masksToBounds = true
-            //containerView.addSubview(downimg!)
             shadowLayer.colors = [UIColor.clear.cgColor,UIColor.black.cgColor]
             shadowLayer.frame = CGRect(origin: CGPoint.zero, size: (self.frame.size))
             shadowLayer.opacity = 0

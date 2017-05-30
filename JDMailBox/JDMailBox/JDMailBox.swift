@@ -45,10 +45,11 @@ extension JDMailBoxComposeVC:MFMailComposeViewControllerDelegate
     {
         controller.dismiss(animated: true, completion: nil)
         print(#function)
-        if(maildelegate != nil)
+        if let userDelegate = maildelegate?.mailComposeController
         {
-            maildelegate?.mailComposeController!(controller, didFinishWith: result, error: error)
+            userDelegate(controller, result, error)
         }
+        
         if(result == .cancelled || result == .failed)
         {
             isCancel = true
